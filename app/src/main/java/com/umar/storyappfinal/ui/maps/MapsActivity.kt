@@ -140,6 +140,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+
     private fun showLoading(b: Boolean) {
         View.GONE
         View.VISIBLE

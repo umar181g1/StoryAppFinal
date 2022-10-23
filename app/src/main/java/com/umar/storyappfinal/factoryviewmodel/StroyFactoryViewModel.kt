@@ -21,10 +21,10 @@ class StroyFactoryViewModel private constructor(
                 MainViewModel(userPreference, storyRepository) as T
             }
             modelClass.isAssignableFrom(StoryViewModel::class.java) -> {
-                StoryViewModel(userPreference, storyRepository) as T
+                StoryViewModel(storyRepository,userPreference) as T
             }
             modelClass.isAssignableFrom(MapsViewModel::class.java) -> {
-                MapsViewModel(storyRepository, userPreference) as T
+                MapsViewModel(storyRepository,userPreference) as T
             }
             else -> {
                 throw  IllegalArgumentException("uknow viewmodel class:" + modelClass.name)

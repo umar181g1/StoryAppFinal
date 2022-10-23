@@ -1,9 +1,6 @@
 package com.umar.storyappfinal.network
 
-import com.umar.storyappfinal.model.ResponseAll
-import com.umar.storyappfinal.model.ResponseLogin
-import com.umar.storyappfinal.model.ResponseRegister
-import com.umar.storyappfinal.model.ResponseUpload
+import com.umar.storyappfinal.model.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.*

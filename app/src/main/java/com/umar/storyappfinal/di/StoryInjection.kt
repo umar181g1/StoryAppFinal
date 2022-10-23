@@ -9,12 +9,11 @@ import com.umar.storyappfinal.model.StoryRepository
 import com.umar.storyappfinal.network.ApiCall
 
 
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 object StoryInjection {
     fun provider(context: Context): StoryRepository {
         val apiSer = ApiCall.getApiService()
         val database = StoryDatabase.getDatabase(context)
-        return StoryRepository(database, apiSer, context.dataStore)
+        return StoryRepository(database, apiSer)
     }
 }

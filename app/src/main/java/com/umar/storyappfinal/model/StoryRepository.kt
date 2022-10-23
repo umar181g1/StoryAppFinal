@@ -1,8 +1,6 @@
 package com.umar.storyappfinal.model
 
 import android.util.Log
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import androidx.paging.*
@@ -15,7 +13,7 @@ import okhttp3.RequestBody
 class StoryRepository(
     private val storyDatabase: StoryDatabase,
     private val apiService: ApiService,
-    dataStore: DataStore<Preferences>,
+
 ) {
     fun getStories(token: String): LiveData<PagingData<ListStoryItem>> {
         @OptIn(ExperimentalPagingApi::class)
@@ -61,11 +59,10 @@ class StoryRepository(
 
         fun getInstance(
             storyDatabase: StoryDatabase,
-            dataStore: DataStore<Preferences>,
             apiService: ApiService
         ): StoryRepository {
             return INSTANCE ?: synchronized(this) {
-                val instance = StoryRepository(storyDatabase, apiService, dataStore)
+                val instance = StoryRepository(storyDatabase, apiService)
                 INSTANCE = instance
                 instance
             }

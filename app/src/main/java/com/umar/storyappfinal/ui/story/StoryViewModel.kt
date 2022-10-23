@@ -9,13 +9,13 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
 class StoryViewModel(
+    private var storyRepository: StoryRepository,
     private val userPreference: UserPreference,
-    private val storyRepository: StoryRepository
-) : ViewModel() {
+
+    ) : ViewModel() {
     fun getToken(): LiveData<String> {
         return userPreference.getToken().asLiveData()
     }
-
     fun addStory(token: String, photo: MultipartBody.Part, desc: RequestBody) =
         storyRepository.addStories(token, photo, desc)
 }

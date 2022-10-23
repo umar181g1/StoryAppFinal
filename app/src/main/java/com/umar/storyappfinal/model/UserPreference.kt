@@ -12,7 +12,7 @@ import com.umar.storyappfinal.network.ApiService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class UserPreference private constructor(
+class UserPreference (
     private val dataStore: DataStore<Preferences>,
     private val apiService: ApiService
 ) {

@@ -20,6 +20,7 @@ import com.umar.storyappfinal.databinding.ActivityAddStoryBinding
 import com.umar.storyappfinal.factoryviewmodel.StroyFactoryViewModel
 import com.umar.storyappfinal.model.Result
 import com.umar.storyappfinal.ui.login.LoginActivity
+import com.umar.storyappfinal.ui.maps.MapsActivity
 import com.umar.storyappfinal.ui.reduceFileImage
 import com.umar.storyappfinal.ui.uriToFile
 import okhttp3.MediaType.Companion.toMediaType
@@ -67,6 +68,8 @@ class AddStoryActivity : AppCompatActivity() {
                 REQUEST_CODE_PERMISSIONS
             )
         }
+        token = intent.getStringExtra(MapsActivity.EXTRA_TOKEN).toString()
+
 
         this.title = getString(R.string.title)
 
@@ -193,5 +196,7 @@ class AddStoryActivity : AppCompatActivity() {
     companion object {
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
         private const val REQUEST_CODE_PERMISSIONS = 10
+        const val EXTRA_TOKEN = "extra_token"
+
     }
 }
