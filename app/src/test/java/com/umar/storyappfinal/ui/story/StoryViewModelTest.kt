@@ -3,6 +3,7 @@ package com.umar.storyappfinal.ui.story
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.umar.storyappfinal.DataDumy
+import com.umar.storyappfinal.MainCoroutineRule
 import com.umar.storyappfinal.getOrAwaitValue
 import com.umar.storyappfinal.model.ResponseUpload
 import com.umar.storyappfinal.model.Result
@@ -10,6 +11,7 @@ import com.umar.storyappfinal.model.StoryRepository
 import com.umar.storyappfinal.model.UserPreference
 import junit.framework.Assert.assertNotNull
 import junit.framework.Assert.assertTrue
+import kotlinx.coroutines.flow.flowOf
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
@@ -24,7 +26,8 @@ class StoryViewModelTest {
 
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
-
+    @get:Rule
+    val mainDispatcherRules = MainCoroutineRule()
 
     @Mock
     private lateinit var addStoryViewModel: StoryViewModel
@@ -32,6 +35,7 @@ class StoryViewModelTest {
     private val mock1 = Mockito.mock(UserPreference::class.java)
     private var dummyMultipart = DataDumy.generateDummyMultipartFile()
     private var dummyDescription = DataDumy.generateDummyRequestBody()
+    private val dummyToken = "azhfxrdjgchfgchjvjhfhdgcvcnv"
     private val dummyResponseError = "error"
     private val dummyResponse = ResponseUpload(
         false,
@@ -41,7 +45,7 @@ class StoryViewModelTest {
     @Before
     fun setUp() {
 
-        addStoryViewModel = StoryViewModel(mock,mock1)
+        addStoryViewModel = StoryViewModel(mock, mock1)
 
 
     }
@@ -77,4 +81,16 @@ class StoryViewModelTest {
         assertTrue(actualUplload is Result.Error)
 
     }
+
+    @Test
+    fun `get token successfully`() {
+        val expectedToken = flowOf(dummyToken)
+        Mockito.`when`(mock1.getToken()).thenReturn(expectedToken)
+
+        val actualToken = addStoryViewModel.getToken().getOrAwaitValue()
+        Mockito.verify(mock1).getToken()
+        Assert.assertNotNull(actualToken)
+        Assert.assertEquals(dummyToken, actualToken)
+    }
+
 }

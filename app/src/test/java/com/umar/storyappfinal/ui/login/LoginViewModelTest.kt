@@ -3,11 +3,15 @@ package com.umar.storyappfinal.ui.login
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.umar.storyappfinal.DataDumy
+import com.umar.storyappfinal.MainCoroutineRule
 import com.umar.storyappfinal.getOrAwaitValue
 import com.umar.storyappfinal.model.ResponseLogin
 import com.umar.storyappfinal.model.Result
 import com.umar.storyappfinal.model.UserPreference
 import junit.framework.Assert.*
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runTest
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -21,6 +25,8 @@ import org.mockito.junit.MockitoJUnitRunner
 class LoginViewModelTest{
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
+    @get:Rule
+    val mainDispatcherRule = MainCoroutineRule()
 
     @Mock
     private lateinit var userPreference: UserPreference
@@ -28,6 +34,8 @@ class LoginViewModelTest{
     private val dummyResult = DataDumy.LoginResponSucses()
     private val dummEmail = "umar@koding.com"
     private val dummYpassword = "1234567"
+    private val dummyToken = "azhfxrdjgchfgchjvjhfhdgcvcnv"
+
 
     @Before
     fun setUp() {
@@ -38,7 +46,7 @@ class LoginViewModelTest{
     fun `when login() is Called Should Return Success and Data`() {
         val expectedResponse = MutableLiveData<Result<ResponseLogin>>()
         expectedResponse.value = Result.Success(dummyResult)
-        `when`(loginViewModel.login(dummEmail,dummYpassword)).thenReturn(expectedResponse)
+        `when`(userPreference.login(dummEmail,dummYpassword)).thenReturn(expectedResponse)
 
         val actualResponse = loginViewModel.login(dummEmail, dummYpassword ).getOrAwaitValue()
 
@@ -52,13 +60,30 @@ class LoginViewModelTest{
     fun `when Network Error Should Return Error`() {
         val expectedResponse = MutableLiveData<Result<ResponseLogin>>()
         expectedResponse.value = Result.Error("Error")
-        `when`(loginViewModel.login(dummEmail,dummYpassword)).thenReturn(expectedResponse)
+        `when`(userPreference.login(dummEmail,dummYpassword)).thenReturn(expectedResponse)
 
         val actualResponse = loginViewModel.login(dummEmail,dummYpassword).getOrAwaitValue()
 
         Mockito.verify(userPreference).login(dummEmail,dummYpassword)
         assertNotNull(actualResponse)
         assertTrue(actualResponse is Result.Error)
+    }
+
+    @Test
+     fun `when set token`()= runTest {
+        loginViewModel.setToken(dummyToken, true)
+         Mockito.verify(userPreference).setToken(dummyToken, true)
+    }
+
+    @Test
+    fun `when get token sukses`()  {
+        val expectedToken = flowOf(dummyToken)
+       `when`(userPreference.getToken()).thenReturn(expectedToken)
+
+        val actualToken = loginViewModel.getToken().getOrAwaitValue()
+        Mockito.verify(userPreference).getToken()
+        Assert.assertNotNull(actualToken)
+        Assert.assertEquals(dummyToken, actualToken)
     }
 
 }

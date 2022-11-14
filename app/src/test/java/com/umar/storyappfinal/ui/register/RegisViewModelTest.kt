@@ -39,7 +39,7 @@ class RegisViewModelTest{
     fun `when register() is Called Should Not Null and Return Success`() {
         val expectedResponse = MutableLiveData<Result<ResponseRegister>>()
         expectedResponse.value = Result.Success(dummy)
-        Mockito.`when`(registerViewModel.register(dummynama,dummyemail,dummypassword)).thenReturn(expectedResponse)
+        Mockito.`when`(userPreference.register(dummynama,dummyemail,dummypassword)).thenReturn(expectedResponse)
 
         val actualResponse = registerViewModel.register(dummynama,dummyemail,dummypassword).getOrAwaitValue()
 
@@ -53,7 +53,7 @@ class RegisViewModelTest{
     fun `when Network Error Should Return Error`() {
         val expectedResponse = MutableLiveData<Result<ResponseRegister>>()
         expectedResponse.value = Result.Error("Error")
-        Mockito.`when`(registerViewModel.register(dummynama,dummyemail,dummypassword)).thenReturn(expectedResponse)
+        Mockito.`when`(userPreference.register(dummynama,dummyemail,dummypassword)).thenReturn(expectedResponse)
 
         val actualResponse = registerViewModel.register(dummynama,dummyemail,dummypassword).getOrAwaitValue()
 
